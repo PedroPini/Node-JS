@@ -1,25 +1,35 @@
-import "dotenv/config";
 //ESModule
-import express from 'express'
-const app = express()
-const port = process.env.PORT || 3000
+import "dotenv/config";
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from "cors";
+import taskRoutes from "./routes/tasks.js";
+const port = process.env.PORT || 3000;
+const app = express();
+app.use(cors());
+app.use(express.json());
 
-//http://localhost:3000/
-app.get('/', (req, res) => {
-  console.log("Hurray we're at GET method")
-  res.send('Hello World!')
-})
+//htpp://localhost:3000/
+app.use("/", taskRoutes);
 
-//http://localhost:3000/create/task
-app.post('/create/task', (req, res) => {
-  res.send('Hello World!')
-})
 
-app.post('/create/potato', (req, res) => {
-  res.send('Hello World!')
-})
 
-app.listen(port, () => {
-  console.log(`LOGGING my name as well ${process.env.NAME}`)
-  console.log(`Example app listening on port ${port}`)
-})
+
+
+
+//PROMISE
+(async () => {
+  try {
+    //try to connect to the database
+    await mongoose.connect(process.env.MONGO_URI, {autoIndex: false});
+    console.log("DATABASE CONNECTED");
+
+    app.listen(port, () => {
+      console.log(`Example app listening on port ${port}`)
+    })
+  } catch (error) {
+    //if you fail connecting to the DB, do something
+    console.log(`Connection failed: ${error}`)
+  }
+})();
+
