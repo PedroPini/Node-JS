@@ -13,11 +13,16 @@ class Student {
     getId(){
         console.log(`Student ${this.name} Id is ${this.id}`)
     }
+
+    use(){
+        console.log(`Use`);
+    }
 }
 
 const student1 = new Student(1, "Pedro", 30);
 const student2 = new Student(2, "Jessica", 20);
 student1.getId();
+student1.use();
 student2.getId();
 
 

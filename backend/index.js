@@ -1,20 +1,16 @@
 //ESModule
-import "dotenv/config";
-import express from 'express';
-import mongoose from 'mongoose';
-import cors from "cors";
+import "dotenv/config"; //npm i dotenv
+import express from 'express'; // npm i express
+import mongoose from 'mongoose'; // npm i mongoose
+import cors from "cors"; // npm i cors
 import taskRoutes from "./routes/tasks.js";
 const port = process.env.PORT || 3000;
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-//htpp://localhost:3000/
+//http://localhost:3000/
 app.use("/", taskRoutes);
-
-
-
-
 
 
 //PROMISE
