@@ -18,31 +18,22 @@ router.get("/tasks", async (req, res) => {
     }
 })
 
-// router.post()
-
-// GET http://localhost:3000/create/max
-router.get("/potatoes", async (req, res) => {
+router.post("/tasks/new", async (req, res) => {
     try {
-        res.status(200).json({"name": "task1", "description": "buy milk"})
-    } catch (error) {
-        console.log(`router.get /tasks is failing: ${error}`)
-    }
-})
+        const { title, dueDate } = req.body;
+        console.log(`title: ${title}, dueDate: ${dueDate}`);
+        // const title = req.body.title;
+        // const dueDate = req.body.dueDate;
+        const newTask = await Task.create({
+            title: title,
+            dueDate: dueDate
+        });
 
-// POST http://localhost:3000/create/potatoes
-router.post("/create/potatoes", async (req, res) => {
-    try {
-        console.log(` This is the payload we received ${JSON.stringify(req.body)}`) //[object Object] into string
-        const taskName = req.body.taskName; /// const taskName = "Buy Milk"
-        const date = req.body.date;
-        const tags = req.body.tags;
-        res.status(201).json({"status": "Task Created", "task name": taskName, "Task Date": date, "tags": tags})
-        
+        res.status(201).json({message: "Task created", task: newTask});
     } catch (error) {
-        console.log(`router.get /tasks is failing: ${error}`)
-        res.status(404).json({"error": error.code, "message": error.message})
+        console.log(`Failed to get tasks: ${error}`);
+        res.status(500).json({message: "Failed to get tasks"})
     }
-})
+});
 
-//TODO: POST /create/notes -> note: string, date: string, tag:array
 export default router;
