@@ -9,9 +9,10 @@ router.get("/tasks", async (req, res) => {
 
     //res -> the response you will send from your route
     try {
+        const productName = req.query.product;
         //try this code
         //go to the database and fetch the response
-        res.status(200).json({"name": "task1", "description": "buy milk"})
+        res.status(200).json({"product": productName, "description": "buy milk"})
     } catch (error) {
         //if anything fails, please lets handle it by logging
         console.log(`router.get /tasks is failing: ${error}`)

@@ -1,6 +1,7 @@
 //validate the input being received from the UI
 import mongoose from "mongoose";
 
+//this creates the collection in the database
 const taskSchema = new mongoose.Schema({
     title: { type: String, required: true },
     dueDate: { type: Date, required: true },
