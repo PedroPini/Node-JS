@@ -9,10 +9,13 @@ router.get("/tasks", async (req, res) => {
 
     //res -> the response you will send from your route
     try {
-        const productName = req.query.product;
-        //try this code
-        //go to the database and fetch the response
-        res.status(200).json({"product": productName, "description": "buy milk"})
+        console.log("ROUTER GET TEST");
+        const filter = {};
+        let query = Task.find(filter);
+
+        const tasks = await query;
+        res.json({ message: "Tasks retrieved successfully", tasks: tasks})
+
     } catch (error) {
         //if anything fails, please lets handle it by logging
         console.log(`router.get /tasks is failing: ${error}`)
@@ -36,5 +39,59 @@ router.post("/tasks/new", async (req, res) => {
         res.status(500).json({message: "Failed to get tasks"})
     }
 });
+
+//http://localhost:4000/tasks/complete/2
+router.patch("/tasks/complete/:id", async(req, res) => {
+    try {
+        const taskId = req.params.id;
+        const task = await Task.findByIdAndUpdate(taskId, {completed: true}, {returnDocument: "after"})
+
+        if(!task) { 
+            return res.status(404).json({message: "Task not found"});
+        }
+
+        res.status(200).json({message: "Task completed", task: task})
+    } catch (error) {
+        console.log("Failed to complete the task: ", error);
+        res.status(500).json({message: "Failed to complete the task"});
+    }
+})
+
+router.patch("/tasks/incomplete/:id", async(req, res) => {
+    try {
+        const taskId = req.params.id;
+        const task = await Task.findByIdAndUpdate(taskId, {completed: false}, {returnDocument: "after"})
+
+        if(!task) { 
+            return res.status(404).json({message: "Task not found"});
+        }
+
+        res.status(200).json({message: "Task marked as incomplete", task: task})
+    } catch (error) {
+        console.log("Failed to set the task to incomplete: ", error);
+        res.status(500).json({message: "Failed to set the task to incomplete"});
+    }
+})
+
+//http://localhost:4000/tasks/id/
+
+//DELETE
+//CREATE
+router.delete("/tasks/delete/:id", async(req, res) => {
+    try {
+        const taskId = req.params.id;
+        const task = await Task.findByIdAndDelete(taskId);
+
+        if(!task){
+            return res.status(404).json({message: "Task not found"});
+        }
+
+        res.status(200).json({message:"Task deleted", task: task})
+
+    } catch (error) {
+        console.log("Failed to delete task: ", error);
+        res.status(500).json({message: "Failed to delete task"});
+    }
+})
 
 export default router;
