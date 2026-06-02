@@ -40,7 +40,11 @@ router.post("/tasks/new", async (req, res) => {
     }
 });
 
+//PUT -> Override everything you have with your update
+//PATCH -> you're just going to update the properties you want
+
 //http://localhost:4000/tasks/complete/2
+
 router.patch("/tasks/complete/:id", async(req, res) => {
     try {
         const taskId = req.params.id;
@@ -91,6 +95,29 @@ router.delete("/tasks/delete/:id", async(req, res) => {
     } catch (error) {
         console.log("Failed to delete task: ", error);
         res.status(500).json({message: "Failed to delete task"});
+    }
+})
+
+router.put("/tasks/edit/:id", async (req, res) => {
+    try {
+        const taskId = req.params.id;
+        const { title, dueDate } = req.body;
+
+        const updatedTask = {
+            title: title,
+            dueDate: dueDate,
+        };
+        
+        const task = await Task.findByIdAndUpdate(taskId, updatedTask, {returnDocument: "after"})
+
+        if(!task) { 
+            return res.status(404).json({message: "Task not found"});
+        }
+
+        res.status(200).json({message: "Task has been updated", task: task})
+    } catch (error) {
+        console.log("Failed to update task: ", error);
+        res.status(500).json({message: "Failed to update task"});
     }
 })
 
