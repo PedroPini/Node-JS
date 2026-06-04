@@ -23,7 +23,7 @@ app.use("/", taskRoutes);
     app.listen(port, () => {
       console.log(`Example app listening on port ${port}`)
     })
-    //thunder client -> call http://localhost:3000
+    //thunder client -> call http://localhost:4000
     //node js -> is just on
   } catch (error) {
     //if you fail connecting to the DB, do something

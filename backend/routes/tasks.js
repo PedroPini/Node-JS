@@ -3,6 +3,22 @@ const router = express.Router();
 import Task from "../models/Task.js"
 
 //GET REQUEST http://localhost:3000/tasks?name=Max
+
+
+/**
+ * 3 main things to pay attention when using thunderClient
+ * 1) Method: GET, POST, PUT, PATCH
+ * 2) URL subpath: what's after the http://localhost:3000/
+ * 3) Depending on the method you need to send a body
+ * 
+ * PARAMS: JUST NEED THE URL
+ * BODY: YOU NEED TO SEND THE BODY
+ */
+
+
+
+
+//Retrieve the tasks
 router.get("/tasks", async (req, res) => {
     //req -> is the request so the 
     // payload you're receiving in case the user is sending you data
@@ -11,7 +27,10 @@ router.get("/tasks", async (req, res) => {
     try {
         console.log("ROUTER GET TEST");
         const filter = {};
+        if (req.query.completed === "true") filter.completed = true;
+        if (req.query.completed === "false") filter.completed = false;
         let query = Task.find(filter);
+        if(req.query.sort === "dueDate") query = query.sort({dueDate: 1})
 
         const tasks = await query;
         res.json({ message: "Tasks retrieved successfully", tasks: tasks})
@@ -22,6 +41,7 @@ router.get("/tasks", async (req, res) => {
     }
 })
 
+//create tasks
 router.post("/tasks/new", async (req, res) => {
     try {
         const { title, dueDate } = req.body;
