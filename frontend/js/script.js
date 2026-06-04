@@ -10,7 +10,7 @@ async function displayTasks() {
 
     toDoList.innerHTML = "";
     tasks.forEach(task => {
-        toDoList.appendChild()
+        toDoList.appendChild(formatTask(task))
     })
 
 }
@@ -25,9 +25,9 @@ async function displayTasks() {
 async function getTasks(){
     try {
         const params = new URLSearchParams();
-        const completed = document.getElementById("taskFilter").value;
+        const completed = document.getElementById("taskFilter")?.value;
         if(completed) params.set("completed", completed);
-        if(document.getElementById("sortDueDate").checked) params.set("sort", "dueDate");
+        if(document.getElementById("sortDueDate")?.checked) params.set("sort", "dueDate");
 
         const res = await fetch(`${url}/tasks?${params}`);
         if(!res.ok) {
