@@ -1,5 +1,5 @@
 const url = "http://localhost:4000";
-
+const form = document.getElementById("newTaskForm");
 
 // --------------------------- HELPER FUNCTIONS ----------------
 // WILL ONLY DEAL WITH MANIPULATING THE UI
@@ -42,6 +42,34 @@ async function getTasks(){
     }
 }
 
+//create a new task
+async function createTask(){
+    try {
+        const taskData = {
+            title: form.title.value.trim(),
+            dueDate: form.dueDate.value
+        }
+
+        const res = await fetch(`${url}/tasks/new`, {
+           method: "POST",
+           headers: {"Content-Type": "application/json"},
+           body: JSON.stringify(taskData) 
+        })
+
+        if(!res.ok){
+            const err = await res.json();
+            return console.error(err.message, res.status);
+        }
+
+        const data = await res.json();
+        form.reset();
+        displayTasks();
+        console.log(data.message, data.task);
+    } catch (error) {
+        console.error('Failed to create task: ', error);
+    }
+}
+
 function formatTask(task) {
   const tr = document.createElement("tr");
   tr.classList.add("align-middle");
@@ -69,4 +97,10 @@ function formatTask(task) {
 //-----------------------------EVENT LISTENERS----------------------
 window.addEventListener("DOMContentLoaded", () => {
     displayTasks();
+})
+
+//when you click the submit button on the form
+form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    createTask();
 })
