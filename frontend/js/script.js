@@ -109,6 +109,25 @@ async function incompleteTask(id){
     }
 }
 
+async function deleteTask(id) {
+    try {
+        const res = await fetch(`${url}/tasks/delete/${id}`, {
+            method: "DELETE"
+        });
+
+        if(!res.ok){
+            const err = await res.json();
+            return console.error(err.message, res.status);
+        }
+
+        const data = await res.json();
+        displayTasks();
+        console.log(data.message, data.task);
+    } catch (error) {
+        console.error('Failed to delete task: ', error);
+    }
+}
+
 function formatTask(task) {
   const tr = document.createElement("tr");
   tr.classList.add("align-middle");
