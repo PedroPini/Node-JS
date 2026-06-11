@@ -189,6 +189,11 @@ function openModal(id, title, dueDate){
 //-----------------------------EVENT LISTENERS----------------------
 window.addEventListener("DOMContentLoaded", () => {
     displayTasks();
+    form.reset();
+    document.getElementById("taskFilter").value = "";
+    document.getElementById("sortDueDate").checked = false;
+    document.getElementById("taskFilter").addEventListener("change", displayTasks);
+    document.getElementById("sortDueDate").addEventListener("change", displayTasks);
 })
 
 //when you click the submit button on the form
