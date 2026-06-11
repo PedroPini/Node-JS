@@ -128,6 +128,14 @@ async function deleteTask(id) {
     }
 }
 
+async function editTask(){
+    try {
+        
+    } catch (error) {
+        
+    }
+}
+
 function formatTask(task) {
   const tr = document.createElement("tr");
   tr.classList.add("align-middle");
@@ -151,6 +159,13 @@ function formatTask(task) {
   return tr;
 }
 
+let editingId = null;
+function openModal(id, title, dueDate){
+    editingId = id;
+    document.getElementById('editTitle').value = title;
+    document.getElementById('editDate').value = dueDate;
+    new bootstrap.Modal(document.getElementById('editModal')).show();
+}
 
 //-----------------------------EVENT LISTENERS----------------------
 window.addEventListener("DOMContentLoaded", () => {
