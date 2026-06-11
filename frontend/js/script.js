@@ -56,6 +56,7 @@ async function createTask(){
            body: JSON.stringify(taskData) 
         })
 
+        // !false = true
         if(!res.ok){
             const err = await res.json();
             return console.error(err.message, res.status);
@@ -67,6 +68,44 @@ async function createTask(){
         console.log(data.message, data.task);
     } catch (error) {
         console.error('Failed to create task: ', error);
+    }
+}
+
+async function completeTask(id){
+    try {
+        const res = await fetch(`${url}/tasks/complete/${id}`, {
+            method: "PATCH"
+        });
+
+        if(!res.ok) {
+            const err = await res.json();
+            return console.error(err.message, res.status);
+        }
+
+        const data = await res.json();
+        displayTasks();
+        console.log(data.message, data.task);
+    } catch (error) {
+        console.error('Failed to set task to complete', error)
+    }
+}
+
+async function incompleteTask(id){
+    try {
+        const res = await fetch(`${url}/tasks/incomplete/${id}`, {
+            method: "PATCH"
+        });
+
+        if(!res.ok) {
+            const err = await res.json();
+            return console.error(err.message, res.status);
+        }
+
+        const data = await res.json();
+        displayTasks();
+        console.log(data.message, data.task);
+    } catch (error) {
+        console.error('Failed to set task to incomplete', error)
     }
 }
 
