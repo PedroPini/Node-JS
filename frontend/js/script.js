@@ -130,9 +130,28 @@ async function deleteTask(id) {
 
 async function editTask(){
     try {
-        
+        const updatedTaskData = {
+            title: document.getElementById('editTitle').value.trim(),
+            dueDate: document.getElementById('editDate').value
+        }
+
+        const res = await fetch(`${url}/tasks/edit/${editingId}`, {
+            method: "PUT",
+            headers: {"Content-Type" : "application/json"},
+            body: JSON.stringify(updatedTaskData)
+        });
+
+        if(!res.ok){
+            const err = await res.json();
+            return console.error(err.message, res.status);
+        }
+
+        const data = await res.json();
+        console.log(data.message, data.task);
+        bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
+        displayTasks();
     } catch (error) {
-        
+        console.error('Failed to edit task: ', error);
     }
 }
 
